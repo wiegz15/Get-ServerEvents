@@ -7,11 +7,12 @@ $ScanServers_Click = {
 }
 $GetEvents_Click = {
 
-#Get Checkbox Results
-
-    $Levels = @('Placeholder-0', 'Critical', 'Error', 'Warning', 'Information', 'Verbose')
+#Get Date/Time
     $StartTime = [datetime]::today
     $EndTime = [datetime]::now
+
+#Get Checkbox Results
+    $Levels = @('Placeholder-0', 'Critical', 'Error', 'Warning', 'Information', 'Verbose')
     $ListErr = @()
     If ($CheckBox1.Checked -eq $true){$ListErr = $ListErr + 1}
     If ($CheckBox2.Checked -eq $true){$ListErr = $ListErr + 2}
