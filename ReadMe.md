@@ -1,4 +1,10 @@
+# Get Server Events GUI
+
+##Description
+
 This is a WIP set of scripts that will create a GUI to run the Powershell Get-WinEvents command.
+
+## How it works
 
 It will scan for servers running any Windows Server OS.  You select the dates you want to scan and the Event level you want to see. 
 
