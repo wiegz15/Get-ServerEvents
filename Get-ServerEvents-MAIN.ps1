@@ -1,31 +1,54 @@
-
-$ScanServers_Click = {
-    $Computername = Get-ADComputer -Filter { operatingsystem -like '*server*' } | select-object -expandproperty name
-    foreach ($Computer in $Computername) {
-        [void] $ListSrv.Items.Add("$Computer")
-    }
+$Form1_Load = {
 }
+$Label2_Click = {
+}
+$Label1_Click = {
+}
+$TextBox3_TextChanged = {
+}
+
+#Scan Servers Button
+$ScanServers_Click = {
+    $ScanError.Clear()
+    Try{
+		$Computername = Get-ADComputer -Filter { operatingsystem -like '*server*' } | select-object -expandproperty name
+	    foreach ($Computer in $Computername) {
+	        [void] $ListSrv.Items.Add("$Computer")
+	    }
+	}        
+			catch {
+			$ScanError.Text = "Error connecting to server: $Server - $($Error[0])"
+			}
+}
+
+#Events Button Functions
 $GetEvents_Click = {
 
 #Get Date/Time
-    $StartTime = [datetime]::today
-    $EndTime = [datetime]::now
-
+    #$StartTime = [datetime]::today
+    #$EndTime = [datetime]::now
+     $StartTime = $FromDate.Text
+	 $EndTime = $ToDate.Text
+	 $Results.Text = $ToDate.Text
 #Get Checkbox Results
+    $ScanError.Clear()
     $Levels = @('Placeholder-0', 'Critical', 'Error', 'Warning', 'Information', 'Verbose')
     $ListErr = @()
+	if (($CheckBox1.Checked -eq $false) -and ($CheckBox2.Checked -eq $false) -and ($CheckBox3.Checked -eq $false) -and ($CheckBox4.Checked -eq $false) -and ($CheckBox5.Checked -eq $false)){$ScanError.Text = "No Event Level Checked"}
     If ($CheckBox1.Checked -eq $true){$ListErr = $ListErr + 1}
     If ($CheckBox2.Checked -eq $true){$ListErr = $ListErr + 2}
     If ($CheckBox3.Checked -eq $true){$ListErr = $ListErr + 3}
     If ($CheckBox4.Checked -eq $true){$ListErr = $ListErr + 4}
     If ($CheckBox5.Checked -eq $true){$ListErr = $ListErr + 5}
-    				<# Event Log Levels
+	
+                    <# Event Log Levels
                     1 = Critical
                     2 = Error
                     3 = Warning
                     4 = Information
                     5 = Verbose 
                     #> 
+                    
 #Create Filter
     $EventFilter = @{Logname = 'System', 'Application'
         Level                = $ListErr             #Calling Array made by Check Box
@@ -50,7 +73,8 @@ $GetEvents_Click = {
     #$Output | Out-File C:\Users\awiegel\WinEvents-$Computer.txt
 
         }
-        catch {          
+        catch {
+			$ScanError.Text = "Error connecting to server: $Server - $($Error[0])"
             Write-warning "Error connecting to server: $Server - $($Error[0])"
         }
     }
@@ -58,6 +82,6 @@ $GetEvents_Click = {
 }
 
 Add-Type -AssemblyName System.Windows.Forms
-. (Join-Path $PSScriptRoot 'Get-ServerEvents-GUI.ps1')
+. (Join-Path $PSScriptRoot 'Get-ServerEvents-MAIN.designer.ps1')
 
 $Form1.ShowDialog()
