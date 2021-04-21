@@ -70,7 +70,7 @@ $GetEvents_Click = {
     #foreach ($line in $Output) {$Results.Appendtext($line)}
     #$ListEvents.Text = $Events
     #Export to File 
-    #$Output | Out-File C:\Users\awiegel\WinEvents-$Computer.txt
+    $Output | Export-Csv -Path .\Server_Events_Report.csv -Append
 
         }
         catch {
