@@ -1,7 +1,5 @@
 # Get Server Events GUI
 
-##Description
-
 This is a WIP set of scripts that will create a GUI to run the Powershell Get-WinEvents command.
 
 ## How it works
